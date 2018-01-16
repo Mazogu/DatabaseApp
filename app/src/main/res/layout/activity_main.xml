@@ -46,11 +46,6 @@
             android:onClick="btnCeleb"
             android:layout_weight="1"/>
     </LinearLayout>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Save for later"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -60,12 +55,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/savePref"
+            android:onClick="btnCeleb"
             android:text="Save for later"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/loadPref"
+            android:onClick="btnCeleb"
             android:text="Retrieve Save"/>
     </LinearLayout>
     <ListView

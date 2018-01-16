@@ -1,6 +1,8 @@
 package com.example.micha.celebdatabase;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void btnCeleb(View view) {
+        SharedPreferences shared = getSharedPreferences("mySharedPref", Context.MODE_PRIVATE);
         String cName, cAge, cGender, cIndustry;
         DatabaseHelper database = new DatabaseHelper(this);
         cName = name.getText().toString();
@@ -52,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 long row = database.saveCeleb(celebrity);
                 Toast.makeText(this,"Saved at row: "+row,Toast.LENGTH_SHORT).show();
                 break;
+
             case R.id.getList:
                 final List<Celebrity> list = database.getCelebrityList(DatabaseContract.Action.GET_ALL);
 
@@ -65,6 +69,21 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
+                break;
+
+            case R.id.savePref:
+                SharedPreferences.Editor editor = shared.edit();
+                editor.putString(DatabaseContract.Celebrity.NAME, cName);
+                editor.putString(DatabaseContract.Celebrity.AGE, cAge);
+                editor.putString(DatabaseContract.Celebrity.GENDER, cGender);
+                editor.putString(DatabaseContract.Celebrity.INDUSTRY, cIndustry);
+                boolean isSaved = editor.commit();
+                break;
+            case R.id.loadPref:
+                name.setText(shared.getString(DatabaseContract.Celebrity.NAME,""));
+                age.setText(shared.getString(DatabaseContract.Celebrity.AGE,""));
+                gender.setText(shared.getString(DatabaseContract.Celebrity.GENDER,""));
+                industry.setText(shared.getString(DatabaseContract.Celebrity.INDUSTRY,""));
                 break;
         }
     }

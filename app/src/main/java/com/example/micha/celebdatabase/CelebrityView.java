@@ -44,7 +44,7 @@ public class CelebrityView extends AppCompatActivity {
     }
 
     private void checkFavorite(Celebrity entry) {
-        switch (entry.getFavorite()){
+        switch (entry.getFavorite()) {
             case "0":
                 favoriteToggle = false;
                 imageButton.setImageDrawable(getResources().getDrawable(R.drawable.empty_heart));
@@ -57,19 +57,18 @@ public class CelebrityView extends AppCompatActivity {
     }
 
     private String setFavorite() {
-        if(favoriteToggle){
-            return "1" ;
-        }
-        else{
-            return"0";
+        if (favoriteToggle) {
+            return "1";
+        } else {
+            return "0";
         }
     }
 
     public void viewButton(View view) {
 
         DatabaseHelper db = new DatabaseHelper(this);
-        final Celebrity celebrity = new Celebrity(name.getText().toString(),age.getText().toString(),gender.getText().toString(),
-                industry.getText().toString(),setFavorite());
+        final Celebrity celebrity = new Celebrity(name.getText().toString(), age.getText().toString(), gender.getText().toString(),
+                industry.getText().toString(), setFavorite());
         switch (view.getId()) {
             case R.id.update:
                 //Toast.makeText(this,celebrity.getFavorite(),Toast.LENGTH_SHORT).show();
@@ -78,23 +77,25 @@ public class CelebrityView extends AppCompatActivity {
                 break;
             case R.id.favoriteBtn:
                 favoriteToggle = !favoriteToggle;
-                if(favoriteToggle){
+                if (favoriteToggle) {
                     imageButton.setImageDrawable(getResources().getDrawable(R.drawable.heart_full));
-                }
-                else{
+                } else {
                     imageButton.setImageDrawable(getResources().getDrawable(R.drawable.empty_heart));
                 }
-                Toast.makeText(this,Boolean.toString(favoriteToggle),Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Make sure you press Update to update favorite status", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.delete:
                 int deleted = db.delete(celebrity);
-                if(deleted > 0){
+                if (deleted > 0) {
                     goBack();
                 }
                 break;
             case R.id.viewFavorites:
                 Intent intent = new Intent(getApplicationContext(), FavoriteActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.back:
+                goBack();
                 break;
         }
     }
