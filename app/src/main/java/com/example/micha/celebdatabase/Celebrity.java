@@ -1,10 +1,13 @@
 package com.example.micha.celebdatabase;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by micha on 1/15/2018.
  */
 
-public class Celebrity {
+public class Celebrity implements Parcelable {
     String name;
     String age;
     String industry;
@@ -18,6 +21,26 @@ public class Celebrity {
         this.gender = gender;
         favorite = "0";
     }
+
+    protected Celebrity(Parcel in) {
+        name = in.readString();
+        age = in.readString();
+        industry = in.readString();
+        gender = in.readString();
+        favorite = in.readString();
+    }
+
+    public static final Creator<Celebrity> CREATOR = new Creator<Celebrity>() {
+        @Override
+        public Celebrity createFromParcel(Parcel in) {
+            return new Celebrity(in);
+        }
+
+        @Override
+        public Celebrity[] newArray(int size) {
+            return new Celebrity[size];
+        }
+    };
 
     public String getName() {
         return name;
@@ -68,5 +91,19 @@ public class Celebrity {
                 ", gender='" + gender + '\'' +
                 ", favorite='" + favorite + '\'' +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(name);
+        parcel.writeString(age);
+        parcel.writeString(industry);
+        parcel.writeString(gender);
+        parcel.writeString(favorite);
     }
 }
