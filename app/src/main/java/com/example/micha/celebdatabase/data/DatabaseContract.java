@@ -21,4 +21,9 @@ public class DatabaseContract {
         public static final String INDUSTRY = "Industry";
         public static final String FAVORITE = "Favorite";
     }
+
+    public static class Action {
+        public static final String GET_FAV = "Favorites";
+        public static final String GET_ALL = "All";
+    }
 }

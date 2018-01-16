@@ -48,10 +48,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowNumber;
     }
 
-    public List<Celebrity> getCelebrityList(){
+    public List<Celebrity> getCelebrityList(String Action){
         ArrayList<Celebrity> celebList = new ArrayList<>();
         SQLiteDatabase database = getWritableDatabase();
-        Cursor cursor = database.rawQuery("SELECT * FROM " + DatabaseContract.Celebrity.TABLE_NAME, null);
+        Cursor cursor = null;
+
+        switch (Action){
+            case DatabaseContract.Action.GET_ALL:
+                cursor= database.rawQuery("SELECT * FROM " + DatabaseContract.Celebrity.TABLE_NAME, null);
+                break;
+            case DatabaseContract.Action.GET_FAV:
+                cursor= database.rawQuery("SELECT * FROM " + DatabaseContract.Celebrity.TABLE_NAME + " WHERE "
+                        + DatabaseContract.Celebrity.FAVORITE + "=1", null);
+                break;
+        }
 
         if(cursor.moveToFirst()){
             do{
@@ -76,4 +86,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database.close();
     }
 
+    public int delete(Celebrity celeb){
+        SQLiteDatabase database = getWritableDatabase();
+        int success = database.delete(DatabaseContract.Celebrity.TABLE_NAME, DatabaseContract.Celebrity.NAME
+                + "='" + celeb.getName() + "'", null);
+        return success;
+    }
 }

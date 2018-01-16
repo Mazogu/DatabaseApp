@@ -1,9 +1,12 @@
 package com.example.micha.celebdatabase;
 
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +21,7 @@ public class CelebrityView extends AppCompatActivity {
     private EditText gender;
     private EditText industry;
     boolean favoriteToggle;
+    private ImageButton imageButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,13 +29,14 @@ public class CelebrityView extends AppCompatActivity {
         setContentView(R.layout.activity_celebrity_view);
 
         Celebrity celebrity = getIntent().getParcelableExtra("Celebrity");
-        checkFavorite(celebrity);
 
         name = findViewById(R.id.nameView);
         age = findViewById(R.id.ageView);
         gender = findViewById(R.id.genderView);
         industry = findViewById(R.id.industryView);
+        imageButton = findViewById(R.id.favoriteBtn);
 
+        checkFavorite(celebrity);
         name.setText(celebrity.getName());
         age.setText(celebrity.getAge());
         gender.setText(celebrity.getGender());
@@ -42,8 +47,10 @@ public class CelebrityView extends AppCompatActivity {
         switch (entry.getFavorite()){
             case "0":
                 favoriteToggle = false;
+                imageButton.setImageDrawable(getResources().getDrawable(R.drawable.empty_heart));
                 break;
             case "1":
+                imageButton.setImageDrawable(getResources().getDrawable(R.drawable.heart_full));
                 favoriteToggle = true;
                 break;
         }
@@ -59,19 +66,41 @@ public class CelebrityView extends AppCompatActivity {
     }
 
     public void viewButton(View view) {
+
+        DatabaseHelper db = new DatabaseHelper(this);
+        final Celebrity celebrity = new Celebrity(name.getText().toString(),age.getText().toString(),gender.getText().toString(),
+                industry.getText().toString(),setFavorite());
         switch (view.getId()) {
             case R.id.update:
-                final Celebrity celebrity = new Celebrity(name.getText().toString(),age.getText().toString(),gender.getText().toString(),
-                        industry.getText().toString(),setFavorite());
-
-                DatabaseHelper db = new DatabaseHelper(this);
                 //Toast.makeText(this,celebrity.getFavorite(),Toast.LENGTH_SHORT).show();
                 db.update(celebrity);
+                goBack();
                 break;
             case R.id.favoriteBtn:
                 favoriteToggle = !favoriteToggle;
+                if(favoriteToggle){
+                    imageButton.setImageDrawable(getResources().getDrawable(R.drawable.heart_full));
+                }
+                else{
+                    imageButton.setImageDrawable(getResources().getDrawable(R.drawable.empty_heart));
+                }
                 Toast.makeText(this,Boolean.toString(favoriteToggle),Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.delete:
+                int deleted = db.delete(celebrity);
+                if(deleted > 0){
+                    goBack();
+                }
+                break;
+            case R.id.viewFavorites:
+                Intent intent = new Intent(getApplicationContext(), FavoriteActivity.class);
+                startActivity(intent);
+                break;
         }
+    }
+
+    private void goBack() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
     }
 }

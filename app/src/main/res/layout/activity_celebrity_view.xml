@@ -43,7 +43,18 @@
             android:layout_weight="1"
             android:id="@+id/favoriteBtn"
             android:onClick="viewButton"
-            android:src="@mipmap/ic_launcher"/>
+            android:src="@drawable/ic_heart_empty"/>
     </LinearLayout>
-
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Delete Celebrity"
+        android:onClick="viewButton"
+        android:id="@+id/delete"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="View Favorites"
+        android:onClick="viewButton"
+        android:id="@+id/viewFavorites"/>
 </LinearLayout>

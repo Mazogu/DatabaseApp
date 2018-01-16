@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.micha.celebdatabase.data.DatabaseContract;
 import com.example.micha.celebdatabase.data.DatabaseHelper;
 
 import java.util.List;
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this,"Saved at row: "+row,Toast.LENGTH_SHORT).show();
                 break;
             case R.id.getList:
-                final List<Celebrity> list = database.getCelebrityList();
+                final List<Celebrity> list = database.getCelebrityList(DatabaseContract.Action.GET_ALL);
 
                 ArrayAdapter<Celebrity> adapter = new ArrayAdapter<Celebrity>(this,android.R.layout.simple_expandable_list_item_1,list);
                 celebListView.setAdapter(adapter);
