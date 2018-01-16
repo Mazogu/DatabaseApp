@@ -6,25 +6,44 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.micha.celebdatabase.CelebrityView">
-    <TextView
+    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/nameView"
         android:textSize="40sp"/>
-    <TextView
+    <EditText
         android:layout_width="match_parent"
         android:textSize="40sp"
         android:layout_height="wrap_content"
         android:id="@+id/ageView"/>
-    <TextView
+    <EditText
         android:layout_width="match_parent"
         android:textSize="40sp"
         android:layout_height="wrap_content"
         android:id="@+id/genderView"/>
-    <TextView
+    <EditText
         android:layout_width="match_parent"
         android:textSize="40sp"
         android:layout_height="wrap_content"
         android:id="@+id/industryView"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Update Celebrity"
+            android:onClick="viewButton"
+            android:id="@+id/update"
+            android:layout_weight="1"/>
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/favoriteBtn"
+            android:onClick="viewButton"
+            android:src="@mipmap/ic_launcher"/>
+    </LinearLayout>
 
 </LinearLayout>

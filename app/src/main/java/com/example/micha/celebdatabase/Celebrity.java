@@ -8,11 +8,11 @@ import android.os.Parcelable;
  */
 
 public class Celebrity implements Parcelable {
-    String name;
-    String age;
-    String industry;
-    String gender;
-    String favorite;
+    private String name;
+    private String age;
+    private String industry;
+    private String gender;
+    private String favorite;
 
     public Celebrity(String name, String age, String industry, String gender) {
         this.name = name;
@@ -20,6 +20,13 @@ public class Celebrity implements Parcelable {
         this.industry = industry;
         this.gender = gender;
         favorite = "0";
+    }
+    public Celebrity(String name, String age, String industry, String gender, String favorite) {
+        this.name = name;
+        this.age = age;
+        this.industry = industry;
+        this.gender = gender;
+        this.favorite = favorite;
     }
 
     protected Celebrity(Parcel in) {

@@ -55,12 +55,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if(cursor.moveToFirst()){
             do{
-                Celebrity celebrity = new Celebrity(cursor.getString(0),cursor.getString(1),cursor.getString(2),cursor.getString(3));
+                Celebrity celebrity = new Celebrity(cursor.getString(0),cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4));
                 celebList.add(celebrity);
             }while(cursor.moveToNext());
         }
         database.close();
         return celebList;
+    }
+
+    public void update(Celebrity celeb){
+        SQLiteDatabase database = getWritableDatabase();
+        ContentValues content = new ContentValues();
+        content.put(DatabaseContract.Celebrity.AGE,celeb.getAge());
+        content.put(DatabaseContract.Celebrity.GENDER, celeb.getGender());
+        content.put(DatabaseContract.Celebrity.INDUSTRY, celeb.getIndustry());
+        content.put(DatabaseContract.Celebrity.FAVORITE, celeb.getFavorite());
+
+        database.update(DatabaseContract.Celebrity.TABLE_NAME, content, DatabaseContract.Celebrity.NAME + "='"
+                + celeb.getName()+"'",null);
+        database.close();
     }
 
 }
