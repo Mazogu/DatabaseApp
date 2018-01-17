@@ -3,6 +3,7 @@ package com.example.micha.celebdatabase;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,13 @@ import android.widget.Toast;
 import com.example.micha.celebdatabase.data.DatabaseContract;
 import com.example.micha.celebdatabase.data.DatabaseHelper;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,7 +49,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void btnCeleb(View view) {
-        SharedPreferences shared = getSharedPreferences("mySharedPref", Context.MODE_PRIVATE);
+        String filename = "savedEntries";
+        OutputStream out;
+        InputStream in;
         String cName, cAge, cGender, cIndustry;
         DatabaseHelper database = new DatabaseHelper(this);
         cName = name.getText().toString();
@@ -72,18 +82,48 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.savePref:
-                SharedPreferences.Editor editor = shared.edit();
-                editor.putString(DatabaseContract.Celebrity.NAME, cName);
-                editor.putString(DatabaseContract.Celebrity.AGE, cAge);
-                editor.putString(DatabaseContract.Celebrity.GENDER, cGender);
-                editor.putString(DatabaseContract.Celebrity.INDUSTRY, cIndustry);
-                boolean isSaved = editor.commit();
+                try{
+                    out = openFileOutput(filename, Context.MODE_PRIVATE);
+                    out.write((cName+"\n").getBytes());
+                    out.write((cAge+"\n").getBytes());
+                    out.write((cGender+"\n").getBytes());
+                    out.write((cIndustry+"\n").getBytes());
+                    out.close();
+                }
+                catch (IOException e){
+                    Toast.makeText(this,"This didn't work",Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.loadPref:
-                name.setText(shared.getString(DatabaseContract.Celebrity.NAME,""));
-                age.setText(shared.getString(DatabaseContract.Celebrity.AGE,""));
-                gender.setText(shared.getString(DatabaseContract.Celebrity.GENDER,""));
-                industry.setText(shared.getString(DatabaseContract.Celebrity.INDUSTRY,""));
+                try{
+                    File input = new File(getFilesDir().getAbsolutePath(),filename);
+                    StringBuilder text = new StringBuilder();
+                    String line;
+                    BufferedReader read = new BufferedReader(new FileReader(input));
+                    int i = 0;
+                    while((line = read.readLine()) != null){
+                        switch (i){
+                            case 0:
+                                name.setText(line);
+                                break;
+                            case 1:
+                                age.setText(line);
+                                break;
+                            case 2:
+                                gender.setText(line);
+                                break;
+                            case 3:
+                                industry.setText(line);
+                                break;
+                        }
+                        i++;
+                    }
+                    read.close();
+                }
+                catch (IOException e){
+                    Toast.makeText(this,"Something broke",Toast.LENGTH_SHORT).show();
+                }
+
                 break;
         }
     }
